@@ -1,0 +1,544 @@
+/* ===================================================
+   WT Assignment 2 – World Clock Dashboard
+   Global Styles & Design System
+   =================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-primary: #060b17;
+  --bg-secondary: #0d1526;
+  --bg-card: #111827;
+  --bg-card-hover: #1a2338;
+  --border: rgba(99, 102, 241, 0.2);
+  --border-glow: rgba(99, 102, 241, 0.5);
+  --accent-indigo: #6366f1;
+  --accent-purple: #8b5cf6;
+  --accent-cyan: #06b6d4;
+  --accent-amber: #f59e0b;
+  --accent-green: #10b981;
+  --accent-rose: #f43f5e;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --glow: 0 0 30px rgba(99, 102, 241, 0.3);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --radius-card: 20px;
+  --radius-sm: 10px;
+  --font-main: 'Inter', sans-serif;
+  --font-digital: 'Orbitron', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-main);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Animated background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 20%, rgba(99,102,241,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139,92,246,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(6,182,212,0.04) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Layout ── */
+.dashboard {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ── Header ── */
+.dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.dash-title {
+  font-family: var(--font-digital);
+  font-size: clamp(1.2rem, 4vw, 2rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-indigo), var(--accent-cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.05em;
+}
+.dash-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+.dash-badge {
+  background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 50px;
+  letter-spacing: 0.05em;
+}
+
+/* ── Grid Layout ── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.side-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+@media (max-width: 900px) {
+  .main-grid, .side-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Card ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.card:hover {
+  border-color: var(--border-glow);
+  box-shadow: var(--glow), var(--shadow-card);
+}
+.card-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-title-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent-indigo);
+  box-shadow: 0 0 8px var(--accent-indigo);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+/* ── Analog Clock ── */
+.analog-clock-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.clock-svg { filter: drop-shadow(0 0 20px rgba(99,102,241,0.3)); }
+
+/* ── Digital Clock ── */
+.digital-time {
+  font-family: var(--font-digital);
+  font-size: clamp(2.5rem, 8vw, 4.5rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff 0%, var(--accent-cyan) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-align: center;
+}
+.digital-date {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: 8px;
+  font-weight: 500;
+}
+.digital-day {
+  font-family: var(--font-digital);
+  font-size: 0.8rem;
+  color: var(--accent-indigo);
+  text-align: center;
+  letter-spacing: 0.15em;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.digital-ampm {
+  font-family: var(--font-digital);
+  font-size: 1rem;
+  color: var(--accent-amber);
+  margin-left: 8px;
+  vertical-align: super;
+}
+
+/* ── Timezone section ── */
+.tz-list { display: flex; flex-direction: column; gap: 12px; }
+.tz-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radius-sm);
+  transition: background 0.2s, border-color 0.2s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.tz-item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--tz-color, var(--accent-indigo));
+}
+.tz-item:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+.tz-item.active { background: rgba(99,102,241,0.1); border-color: rgba(99,102,241,0.3); }
+.tz-city { font-weight: 600; font-size: 0.9rem; }
+.tz-country { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
+.tz-time {
+  font-family: var(--font-digital);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+}
+.tz-offset { font-size: 0.7rem; color: var(--text-muted); text-align: right; margin-top: 2px; }
+.tz-remove-btn {
+  background: none; border: none; color: var(--text-muted);
+  cursor: pointer; font-size: 1rem; padding: 0 0 0 8px;
+  opacity: 0; transition: opacity 0.2s;
+}
+.tz-item:hover .tz-remove-btn { opacity: 1; }
+.tz-remove-btn:hover { color: var(--accent-rose); }
+
+.tz-add {
+  display: flex; gap: 8px; margin-top: 12px;
+}
+.tz-select {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+.tz-select:focus { border-color: var(--accent-indigo); }
+.tz-select option { background: #1a2338; }
+
+.btn-add {
+  background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.btn-add:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-add:active { transform: translateY(0); }
+
+/* ── Alarm Section ── */
+.alarm-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.alarm-input-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.alarm-input {
+  flex: 1;
+  min-width: 140px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.alarm-input:focus { border-color: var(--accent-amber); }
+.alarm-input::placeholder { color: var(--text-muted); }
+.alarm-label { font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 4px; }
+
+.btn-alarm {
+  background: linear-gradient(135deg, var(--accent-amber), #f97316);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 18px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.btn-alarm:hover { opacity: 0.9; transform: translateY(-1px); }
+
+.alarm-list { display: flex; flex-direction: column; gap: 8px; }
+.alarm-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+}
+.alarm-item.ringing {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: var(--accent-rose);
+  animation: ring-pulse 0.5s infinite alternate;
+}
+@keyframes ring-pulse {
+  from { box-shadow: 0 0 0 rgba(244,63,94,0); }
+  to   { box-shadow: 0 0 20px rgba(244,63,94,0.4); }
+}
+.alarm-time-display {
+  font-family: var(--font-digital);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-amber);
+}
+.alarm-label-text { font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
+.alarm-controls { display: flex; gap: 8px; align-items: center; }
+
+.alarm-toggle {
+  width: 44px; height: 24px;
+  background: var(--text-muted);
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+.alarm-toggle.on { background: var(--accent-green); }
+.alarm-toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s;
+}
+.alarm-toggle.on::after { transform: translateX(20px); }
+
+.btn-del {
+  background: none; border: 1px solid rgba(244,63,94,0.3);
+  color: var(--accent-rose); border-radius: 8px;
+  padding: 4px 8px; cursor: pointer; font-size: 0.8rem;
+  transition: background 0.2s;
+}
+.btn-del:hover { background: rgba(244,63,94,0.15); }
+
+/* ── Stopwatch ── */
+.stopwatch-display {
+  font-family: var(--font-digital);
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 700;
+  color: var(--accent-cyan);
+  text-align: center;
+  letter-spacing: 0.06em;
+  margin: 12px 0 20px;
+}
+.sw-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.sw-btn {
+  padding: 10px 24px;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.sw-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+.sw-btn.start { background: linear-gradient(135deg, var(--accent-green), #059669); color: #fff; }
+.sw-btn.pause { background: linear-gradient(135deg, var(--accent-amber), #d97706); color: #fff; }
+.sw-btn.reset { background: rgba(255,255,255,0.08); color: var(--text-secondary); border: 1px solid var(--border); }
+.sw-btn.lap { background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple)); color: #fff; }
+
+.lap-list {
+  max-height: 160px;
+  overflow-y: auto;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lap-list::-webkit-scrollbar { width: 4px; }
+.lap-list::-webkit-scrollbar-track { background: transparent; }
+.lap-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.lap-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.lap-num { color: var(--text-muted); }
+.lap-time { font-family: var(--font-digital); color: var(--accent-cyan); font-size: 0.9rem; }
+.lap-diff { color: var(--text-secondary); }
+
+/* ── World Map Timezones ── */
+.world-tz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+.world-tz-card {
+  padding: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  transition: background 0.2s, transform 0.2s;
+  cursor: default;
+}
+.world-tz-card:hover { background: rgba(255,255,255,0.07); transform: translateY(-2px); }
+.world-tz-flag { font-size: 1.8rem; }
+.world-tz-city { font-weight: 600; font-size: 0.85rem; margin: 6px 0 2px; }
+.world-tz-time {
+  font-family: var(--font-digital);
+  font-size: 1rem;
+  color: var(--accent-cyan);
+  letter-spacing: 0.05em;
+}
+.world-tz-date { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+/* ── Theme toggle ── */
+.theme-toggle {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.theme-btn {
+  padding: 8px 16px;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.05);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.theme-btn.active {
+  background: linear-gradient(135deg, var(--accent-indigo), var(--accent-purple));
+  color: #fff;
+  border-color: transparent;
+}
+
+/* ── Footer ── */
+.dash-footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ── Alarm ringing notification ── */
+.alarm-notification {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 999;
+  background: linear-gradient(135deg, #1a2338, #111827);
+  border: 2px solid var(--accent-rose);
+  border-radius: var(--radius-card);
+  padding: 20px 24px;
+  box-shadow: 0 0 40px rgba(244,63,94,0.4);
+  animation: slide-in 0.4s ease, ring-pulse 0.5s infinite alternate;
+  max-width: 320px;
+}
+@keyframes slide-in {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.alarm-notif-title { font-size: 1.1rem; font-weight: 700; color: var(--accent-rose); margin-bottom: 4px; }
+.alarm-notif-time { font-family: var(--font-digital); font-size: 1.5rem; color: #fff; }
+.alarm-notif-label { font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px; }
+.alarm-dismiss {
+  margin-top: 12px;
+  width: 100%;
+  padding: 10px;
+  background: var(--accent-rose);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* ── Format toggle ── */
+.format-toggle {
+  display: flex;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 3px;
+  gap: 2px;
+  margin: 0 auto 16px;
+  width: fit-content;
+}
+.format-btn {
+  padding: 6px 18px;
+  border: none;
+  border-radius: 50px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.format-btn.active { background: var(--accent-indigo); color: #fff; }
+
+/* ── Seconds ring ── */
+.seconds-ring-text {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: -4px;
+}
